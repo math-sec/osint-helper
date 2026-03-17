@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSINT Helper</title>
+  <meta
+    name="description"
+    content="Dark OSINT launcher for opening Google dorks, GitHub searches, and recon shortcuts from a single target."
+  >
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Recon Launcher</p>
+        <h1>OSINT Helper</h1>
+        <p class="hero-text">
+          Launch Google dorks, GitHub searches, archive lookups, and recon shortcuts from a
+          single target. Enter a domain and open the trail in seconds.
+        </p>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <form id="target-form" class="control-panel" autocomplete="off">
+        <div class="control-grid">
+          <label class="field field-main" for="target-input">
+            <span>Target</span>
+            <input
+              id="target-input"
+              name="target"
+              type="text"
+              placeholder="e.g. example.com"
+              spellcheck="false"
+            >
+          </label>
+
+          <label class="field" for="tool-search">
+            <span>Filter modules</span>
+            <input
+              id="tool-search"
+              name="tool-search"
+              type="search"
+              placeholder="e.g. wayback, pastebin, github..."
+            >
+          </label>
+
+          <div class="actions">
+            <button id="open-visible" class="button button-primary" type="button">
+              Launch Visible
+            </button>
+            <button id="clear-target" class="button button-secondary" type="button">
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <div class="status-row">
+          <p id="target-summary" class="summary" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <div id="workspace-tabs" class="workspace-tabs" role="tablist" aria-label="Workspace sections">
+        <button class="workspace-tab is-active" type="button" role="tab" aria-selected="true" data-view="modules">
+          Modules
+        </button>
+        <button class="workspace-tab" type="button" role="tab" aria-selected="false" data-view="links">
+          Interesting Links
+        </button>
+        <button class="workspace-tab" type="button" role="tab" aria-selected="false" data-view="tips">
+          Tips
+        </button>
+      </div>
+
+      <section class="view-panel" data-view-panel="modules">
+        <div id="category-filters" class="filters" aria-label="Category filters"></div>
+
+        <div class="toolbar">
+          <p id="tool-count" class="tool-count"></p>
+          <p class="toolbar-note">
+            Launching many links at once may trigger the browser pop-up blocker.
+          </p>
+        </div>
+
+        <section id="tool-grid" class="tool-grid" aria-live="polite"></section>
+      </section>
+
+      <section class="view-panel" data-view-panel="links" hidden>
+        <section class="resource-panel" aria-labelledby="interesting-links-title">
+          <div class="section-head">
+            <p class="section-kicker">Reference Set</p>
+            <h2 id="interesting-links-title">Interesting Links</h2>
+          </div>
+          <div id="interesting-links" class="resource-grid" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section class="view-panel" data-view-panel="tips" hidden>
+        <section class="resource-panel" aria-labelledby="tips-title">
+          <div class="section-head">
+            <p class="section-kicker">Field Notes</p>
+            <h2 id="tips-title">Tips</h2>
+          </div>
+          <div id="tips-grid" class="tip-grid" aria-live="polite"></div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <footer class="footer">
+    <p>Use these shortcuts only in authorized and legitimate contexts.</p>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
