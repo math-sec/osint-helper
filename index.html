@@ -77,6 +77,24 @@
       <section class="view-panel" data-view-panel="modules">
         <div id="category-filters" class="filters" aria-label="Category filters"></div>
 
+        <section id="analytics-panel" class="analytics-panel" hidden>
+          <div class="analytics-grid">
+            <label class="field field-main" for="analytics-input">
+              <span>Google Tag ID</span>
+              <input
+                id="analytics-input"
+                name="analytics"
+                type="text"
+                placeholder="e.g. GTM-564S72 or UA-12345678-1"
+                spellcheck="false"
+                autocomplete="off"
+              >
+            </label>
+
+            <p id="analytics-summary" class="analytics-summary" aria-live="polite"></p>
+          </div>
+        </section>
+
         <div class="toolbar">
           <p id="tool-count" class="tool-count"></p>
           <p class="toolbar-note">
@@ -103,6 +121,7 @@
             <p class="section-kicker">Field Notes</p>
             <h2 id="tips-title">Tips</h2>
           </div>
+          <div id="tips-filters" class="tips-filters" aria-label="Tip filters"></div>
           <div id="tips-grid" class="tip-grid" aria-live="polite"></div>
         </section>
       </section>
