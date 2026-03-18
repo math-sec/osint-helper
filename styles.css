@@ -613,6 +613,10 @@ body::after {
   line-height: 1.55;
 }
 
+.tip-after-note {
+  margin-top: 0.9rem;
+}
+
 .resource-preview,
 .tip-code {
   margin: 0.85rem 0 0;
