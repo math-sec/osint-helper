@@ -1224,6 +1224,31 @@ const tips = [
     ],
   },
   {
+    section: "Exploitation",
+    id: "unicode-normalization-risk-tip",
+    title: "Unicode Normalization Leads to Account Takeover",
+    body: () =>
+      "Inconsistent Unicode normalization across signup, login, password reset, and account recovery flows can cause identity confusion and let one representation of an address map to another user account.",
+    points: [
+      "Create an account on the website with an email address that contains Unicode characters. For example, use an email address like \"tést@example.com\" instead of \"test@example.com\".",
+      "Log in to the account using the email address as normal.",
+      "Using a programming language that supports Unicode normalization (such as Python), perform a Unicode normalization on the email address using a normalization form that differs from the form used by the website. For example, use the NFKD normalization form instead of the NFC normalization form.",
+      "Use the normalized email address to log in to the account again. This time, the login attempt should be successful even though the email address has been modified by the normalization process.",
+      "If the login attempt is successful, the attacker has successfully taken over the user’s account.",
+      "The attacker can now access the victim's personal information, payment details, and other sensitive data.",
+    ],
+    links: [
+      {
+        label: "Homoglyph Attack Generator",
+        url: "https://www.irongeek.com/homoglyph-attack-generator.php",
+      },
+      {
+        label: "Source",
+        url: "https://systemweakness.com/unicode-normalization-leads-to-account-takeover-c0d883915ec5",
+      },
+    ],
+  },
+  {
     section: "Bypasses",
     id: "dns-history-bypass-tip",
     title: "DNS History Firewall Bypass",

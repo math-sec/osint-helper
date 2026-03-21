@@ -861,6 +861,49 @@ body::after {
   font-size: 0.72rem;
 }
 
+.footer-sources {
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(95, 141, 192, 0.14);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, rgba(8, 15, 24, 0.72), rgba(6, 11, 19, 0.68));
+}
+
+.footer-kicker {
+  margin: 0 0 0.3rem;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footer-sources h2 {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.footer-source-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.9rem;
+  margin-top: 0.75rem;
+}
+
+.footer-source-links a {
+  color: rgba(89, 208, 255, 0.88);
+  text-decoration: none;
+  transition: color 180ms ease, opacity 180ms ease;
+  opacity: 0.84;
+}
+
+.footer-source-links a:hover,
+.footer-source-links a:focus-visible {
+  color: var(--accent-strong);
+  opacity: 1;
+}
+
 @media (max-width: 980px) {
   .control-grid,
   .analytics-grid,
