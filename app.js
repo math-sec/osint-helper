@@ -1170,6 +1170,7 @@ const tips = [
       "Applications using Google Identity or Firebase auth may expose admin-sensitive flows.",
       "Endpoints like deleteAccount and signUp can be high-value findings.",
       "Enumerate project and relying party behavior with the exposed API key.",
+      "If an exposed Google API key is in scope, review whether its allowed services and restrictions are too permissive.",
       "Check what permissions buckets expose before assuming they are private.",
       "If the site ends in appspot.com, the bucket may also be accessible through storage.googleapis.com.",
       "Appending .json to a firebaseio URL may expose the backing database.",
@@ -1200,6 +1201,10 @@ const tips = [
       {
         label: "Google Identity Misconfigs",
         url: "https://blog.appsecco.com/exploiting-weak-configurations-in-google-identity-platform-cbddbd0e71e3",
+      },
+      {
+        label: "gap",
+        url: "https://github.com/joanbono/gap",
       },
       {
         label: "GCPBucketBrute",
